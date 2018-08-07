@@ -14,8 +14,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json"}));
-app.use(express.static("./public"));
+app.use(bodyParser.text({ type: 'text/html'}));
+app.use(express.static("./app/public"));
+
+require('./app/routing/apiRoutes.js')(app);
+
+app.get("/", function(req, res) {
+    res.sendFile(path.join(__dirname, "./app/public/home.html"));
+});
 
 app.listen(PORT, function() {
-    console.log("App listening on PORT " + PORT);
+    console.log("App listening on http://localhost:" + PORT);
 });
